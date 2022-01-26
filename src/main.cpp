@@ -4,6 +4,7 @@
 #include <Adafruit_GFX.h>
 #include "Adafruit_LEDBackpack.h"
 #include <SPI.h>
+#include <time.h>
 
 
 Adafruit_7segment matrix = Adafruit_7segment();
@@ -26,7 +27,7 @@ void loop() {
   if(digitalRead(A7))
   {
     tracker++;
-    delay(100);
+    delay(200);
   }
   if(tracker > 9000)
   {
@@ -46,6 +47,12 @@ void loop() {
   matrix.print(tracker, DEC);
   matrix.writeDisplay();
   delay(10);
+
+  // Puts the Esp32 into deep sleep mode after 20 min, increases battery life by 40x
+  if(millis() > 1200000)
+  {
+    esp_deep_sleep_start();
+  }
   // boolean drawDots = true;
   // // try to print a number thats too long
   // matrix.print(10000, DEC);
@@ -67,5 +74,7 @@ void loop() {
   // matrix.drawColon(drawDots);
   // matrix.writeDisplay();
   // delay(100000);
+ 
   
+
 }
